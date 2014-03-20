@@ -24,7 +24,7 @@ var jmpspeed = 430
 //regola la velocità degli ostacoli
 var speed = -200;
 //regola la velocità del terreno
-var speedground = 3;
+var speedground = 4;
 
 var player;
 var ground;
