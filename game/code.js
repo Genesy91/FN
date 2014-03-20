@@ -14,18 +14,25 @@ function preload() {
     game.load.spritesheet('button-start', 'assets/button-start.png', 232, 85);
     game.load.spritesheet('button-try', 'assets/button-try.png', 232, 85);
     game.load.audio('jump', ['assets/jump.mp3', 'assets/jump.ogg']);
-
+    game.load.audio('push', ['assets/push.mp3', 'assets/push.ogg']);
+    game.load.audio('hit', ['assets/hit.mp3', 'assets/hit.ogg']);
+    game.load.audio('die', ['assets/die.mp3', 'assets/die.ogg']);
 }
+
+//regola il salto
+var jmpspeed = 430
+//regola la velocità degli ostacoli
+var speed = -200;
+//regola la velocità del terreno
+var speedground = 3;
 
 var player;
 var ground;
 var timer = 0;
-var speedground = 5;
 var yground;
 var ambiente;
 var base;
 var deltaPipe;
-var speed = -280;
 var play = false;
 var button_start;
 //var button_Restart;
@@ -40,7 +47,10 @@ var score;
 var migliore=0;
 //variabili audio
 var sjump;
-
+var spush;
+var sdie;
+var shit; 
+//Lel
 
 function create() {
     deltaPipe = game.world.height/3.75;
@@ -68,6 +78,9 @@ function create() {
 
 
     sjump = game.add.audio('jump');
+    spush = game.add.audio('push', 0.9);
+    sdie = game.add.audio('die');
+    shit = game.add.audio('hit', 0.1);
     
 }
 
@@ -93,6 +106,7 @@ function Starter(){
     player.y = 280;
     play = true;
     player.body.gravity.y = 20;
+    spush.play();
     button_start.kill();
 }
 
@@ -115,6 +129,7 @@ function Stopper(pg, amb){
     punteggio.setText("SCORE   " + punti + "\nBEST   " + migliore);
     punteggio.x = tabellone.x + 85;
     punteggio.y = tabellone.y + 75;
+    sdie.play();
     //var best = game.add.text(85, 95, 'BEST', {fill: "Black", font: "40px Arial Black", fontWeight: "bold", align: "right"});
     //best.anchor.set(0.5);
     //best.setText("BEST   " + migliore);
@@ -135,6 +150,7 @@ function Restart(bottone){
     punteggio.setText(punti);
     punteggio.x = 470;
     punteggio.y = 20;
+    spush.play();
     //best.kill();
 }
 
@@ -174,7 +190,7 @@ function createPipe(){
 
 function jump (){
     if (play==true){
-        player.body.velocity.y = -380;
+        player.body.velocity.y = -jmpspeed;
         sjump.play();
     }
 }
@@ -185,12 +201,11 @@ function elimina (oggetto){
 
 
 function aggiornaPunti (pg, trg){
+    shit.play();
     trg.kill();
     punti++;
     punteggio.setText(punti);
 }
 
-function render (){
 
-}
 
